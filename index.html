@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onchain Growth Lab — Web3 Growth Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Sora',sans-serif;background:#001a0a;color:#bbf7d0;min-height:100vh}
+.forest{background-image:radial-gradient(at 20% 30%,rgba(16,185,129,0.12) 0,transparent 50%),radial-gradient(at 80% 70%,rgba(52,211,153,0.08) 0,transparent 50%)}
+.card{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:20px;transition:all .3s}
+.card:hover{border-color:rgba(16,185,129,0.4);box-shadow:0 0 40px rgba(16,185,129,0.08)}
+.chart-box{position:relative;height:180px}
+</style>
+</head>
+<body class="forest">
+<div class="max-w-7xl mx-auto px-6 py-8">
+  <div class="flex items-center gap-4 mb-8">
+    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+    </div>
+    <div><h1 class="text-2xl font-bold text-white">Onchain Growth Lab</h1><p class="text-xs text-emerald-400 tracking-wider">WEB3 GROWTH INTELLIGENCE</p></div>
+  </div>
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div class="card p-5"><p class="text-xs text-emerald-700 mb-1">Protocols Tracked</p><p class="text-3xl font-bold">156</p><p class="text-xs text-emerald-500 mt-2">+12 this month</p></div>
+    <div class="card p-5"><p class="text-xs text-emerald-700 mb-1">Avg TVL Growth</p><p class="text-3xl font-bold text-emerald-400">+34%</p><p class="text-xs text-emerald-500 mt-2">QoQ across portfolio</p></div>
+    <div class="card p-5"><p class="text-xs text-emerald-700 mb-1">User Retention</p><p class="text-3xl font-bold">67<span class="text-lg">%</span></p><p class="text-xs text-emerald-500 mt-2">30-day average</p></div>
+    <div class="card p-5"><p class="text-xs text-emerald-700 mb-1">CAC (Onchain)</p><p class="text-3xl font-bold">$2.40</p><p class="text-xs text-emerald-500 mt-2">↓ 45% vs offchain</p></div>
+  </div>
+  <div class="grid grid-cols-2 gap-4 mb-6">
+    <div class="card p-6"><h3 class="text-sm font-semibold text-emerald-300 mb-4">Growth Funnel Analysis</h3><div class="chart-box"><canvas id="funnelChart"></canvas></div></div>
+    <div class="card p-6"><h3 class="text-sm font-semibold text-emerald-300 mb-4">Retention Cohorts</h3><div class="chart-box"><canvas id="retentionChart"></canvas></div></div>
+  </div>
+  <div class="card p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center"><svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0"/></svg></div>
+      <div><h3 class="text-sm font-semibold text-white">Growth Agent Recommendation</h3><p class="text-xs text-gray-500">MiMo-powered growth strategy</p></div>
+    </div>
+    <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+      <p class="text-sm font-medium mb-1">Optimize: DeFi protocol user acquisition funnel</p>
+      <p class="text-xs text-gray-400">Analysis of 47 protocols shows wallet connection → first swap conversion at 23%. Top performers achieve 41% by reducing approval steps and offering gas subsidies on first transaction. Recommend implementing meta-transactions for new users, projected +78% conversion rate improvement.</p>
+    </div>
+  </div>
+</div>
+<script>
+new Chart(document.getElementById('funnelChart').getContext('2d'),{
+  type:'bar',data:{labels:['Visit','Connect Wallet','Approve','First Tx','Repeat User'],datasets:[{data:[10000,4200,2100,980,640],backgroundColor:['#10b981','#34d399','#6ee7b7','#a7f3d0','#d1fae5'],borderRadius:8,barPercentage:0.7}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#065f46'}},y:{grid:{display:false},ticks:{color:'#065f46',font:{size:11}}}}}
+);
+new Chart(document.getElementById('retentionChart').getContext('2d'),{
+  type:'line',data:{labels:['Week 1','Week 2','Week 3','Week 4','Week 5','Week 6'],datasets:[{label:'Cohort A',data:[100,67,54,48,44,41],borderColor:'#10b981',tension:0.4,pointRadius:3},{label:'Cohort B',data:[100,72,61,55,51,48],borderColor:'#34d399',tension:0.4,pointRadius:3}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{usePointStyle:true,font:{size:11}}}},scales:{x:{grid:{display:false},ticks:{color:'#065f46',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#065f46',callback:v=>v+'%'}}}}
+});
+</script>
+</body>
+</html>
