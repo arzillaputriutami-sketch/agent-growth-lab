@@ -1,0 +1,10 @@
+{
+  "scenario": "testnet campaign launch",
+  "signals": {
+    "activation_rate": 50,
+    "wallet_connect_dropoff": 57,
+    "referral_k_factor": 64,
+    "campaign_cac": 71,
+    "retention_d7": 78
+  }
+}

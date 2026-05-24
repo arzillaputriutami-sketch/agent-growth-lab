@@ -1,0 +1,9 @@
+[project]
+name = "agent-growth-lab"
+version = "1.0.0"
+description = "Experiment operating system for campaigns, funnel diagnosis, cohort scoring, and agent-assisted GTM loops."
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

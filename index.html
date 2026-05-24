@@ -1,58 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Onchain Growth Lab — Web3 Growth Intelligence</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Growth Lab — Experiment &amp; Funnel Tracker</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Sora',sans-serif;background:#001a0a;color:#bbf7d0;min-height:100vh}
-.forest{background-image:radial-gradient(at 20% 30%,rgba(16,185,129,0.12) 0,transparent 50%),radial-gradient(at 80% 70%,rgba(52,211,153,0.08) 0,transparent 50%)}
-.card{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:20px;transition:all .3s}
-.card:hover{border-color:rgba(16,185,129,0.4);box-shadow:0 0 40px rgba(16,185,129,0.08)}
-.chart-box{position:relative;height:180px}
+  :root{--bg:#0b0f1a;--panel:#131b2e;--border:#1e293b;--lime:#84cc16;--green:#10b981;--red:#ef4444;--yellow:#eab308;--cyan:#22f7ff;--text:#e2e8f0;--muted:#94a3b8}
+  *{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+  .mono{font-family:'JetBrains Mono',monospace}.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px}
+  .btn{padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer;border:none;transition:.2s;font-size:14px}
+  .btn-primary{background:var(--lime);color:#0b0f1a}.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}.btn-ghost:hover{border-color:var(--lime)}
+  input,select,textarea{background:#0f172a;border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;outline:none;width:100%;font-size:14px;font-family:inherit}
+  textarea{resize:vertical;min-height:80px}.badge{padding:3px 10px;border-radius:99px;font-size:11px;font-weight:600}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+  .fade-in{animation:fadeIn .3s}@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .exp-card{background:#0f172a;border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:8px;transition:.2s}
+  .exp-card:hover{border-color:var(--lime)}
 </style>
 </head>
-<body class="forest">
-<div class="max-w-7xl mx-auto px-6 py-8">
-  <div class="flex items-center gap-4 mb-8">
-    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center">
-      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+<body>
+<div class="max-w-6xl mx-auto p-4 lg:p-6">
+  <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center text-lg" style="background:var(--lime);color:#0b0f1a">🧪</div>
+      <div><h1 class="text-xl font-bold">Agent Growth Lab</h1><p class="text-xs" style="color:var(--muted)">Track growth experiments, funnels, and cohort metrics</p></div>
     </div>
-    <div><h1 class="text-2xl font-bold text-white">Onchain Growth Lab</h1><p class="text-xs text-emerald-400 tracking-wider">WEB3 GROWTH INTELLIGENCE</p></div>
+    <button onclick="showAddExperiment()" class="btn btn-primary">+ New Experiment</button>
   </div>
-  <div class="grid grid-cols-4 gap-4 mb-6">
-    <div class="card p-5"><p class="text-xs text-emerald-700 mb-1">Protocols Tracked</p><p class="text-3xl font-bold">156</p><p class="text-xs text-emerald-500 mt-2">+12 this month</p></div>
-    <div class="card p-5"><p class="text-xs text-emerald-700 mb-1">Avg TVL Growth</p><p class="text-3xl font-bold text-emerald-400">+34%</p><p class="text-xs text-emerald-500 mt-2">QoQ across portfolio</p></div>
-    <div class="card p-5"><p class="text-xs text-emerald-700 mb-1">User Retention</p><p class="text-3xl font-bold">67<span class="text-lg">%</span></p><p class="text-xs text-emerald-500 mt-2">30-day average</p></div>
-    <div class="card p-5"><p class="text-xs text-emerald-700 mb-1">CAC (Onchain)</p><p class="text-3xl font-bold">$2.40</p><p class="text-xs text-emerald-500 mt-2">↓ 45% vs offchain</p></div>
+
+  <!-- Tabs -->
+  <div class="flex gap-1 border-b mb-6" style="border-color:var(--border)">
+    <div class="tab active" data-tab="dashboard" onclick="switchTab('dashboard')" style="padding:10px 20px;cursor:pointer;border-bottom:2px solid var(--lime);color:var(--lime);font-weight:600">📊 Dashboard</div>
+    <div class="tab" data-tab="experiments" onclick="switchTab('experiments')" style="padding:10px 20px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);font-weight:600">🧪 Experiments</div>
+    <div class="tab" data-tab="funnel" onclick="switchTab('funnel')" style="padding:10px 20px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);font-weight:600">🔄 Funnel</div>
   </div>
-  <div class="grid grid-cols-2 gap-4 mb-6">
-    <div class="card p-6"><h3 class="text-sm font-semibold text-emerald-300 mb-4">Growth Funnel Analysis</h3><div class="chart-box"><canvas id="funnelChart"></canvas></div></div>
-    <div class="card p-6"><h3 class="text-sm font-semibold text-emerald-300 mb-4">Retention Cohorts</h3><div class="chart-box"><canvas id="retentionChart"></canvas></div></div>
-  </div>
-  <div class="card p-6">
-    <div class="flex items-center gap-3 mb-4">
-      <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center"><svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0"/></svg></div>
-      <div><h3 class="text-sm font-semibold text-white">Growth Agent Recommendation</h3><p class="text-xs text-gray-500">MiMo-powered growth strategy</p></div>
+
+  <!-- Dashboard -->
+  <div id="tab-dashboard" class="fade-in">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+      <div class="panel p-4"><p class="text-xs" style="color:var(--muted)">TOTAL EXPERIMENTS</p><p id="totalExp" class="text-2xl font-bold mono mt-1">0</p></div>
+      <div class="panel p-4"><p class="text-xs" style="color:var(--muted)">RUNNING</p><p id="runningExp" class="text-2xl font-bold mono mt-1" style="color:var(--lime)">0</p></div>
+      <div class="panel p-4"><p class="text-xs" style="color:var(--muted)">WIN RATE</p><p id="winRateExp" class="text-2xl font-bold mono mt-1" style="color:var(--green)">—</p></div>
+      <div class="panel p-4"><p class="text-xs" style="color:var(--muted)">AVG IMPROVEMENT</p><p id="avgImprove" class="text-2xl font-bold mono mt-1" style="color:var(--cyan)">—</p></div>
     </div>
-    <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-      <p class="text-sm font-medium mb-1">Optimize: DeFi protocol user acquisition funnel</p>
-      <p class="text-xs text-gray-400">Analysis of 47 protocols shows wallet connection → first swap conversion at 23%. Top performers achieve 41% by reducing approval steps and offering gas subsidies on first transaction. Recommend implementing meta-transactions for new users, projected +78% conversion rate improvement.</p>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+      <div class="panel p-4"><h3 class="font-semibold mb-3">Experiment Results</h3><div style="position:relative;height:250px"><canvas id="resultChart"></canvas></div></div>
+      <div class="panel p-4"><h3 class="font-semibold mb-3">Impact by Category</h3><div style="position:relative;height:250px"><canvas id="categoryChart"></canvas></div></div>
     </div>
+  </div>
+
+  <!-- Experiments List -->
+  <div id="tab-experiments" class="hidden fade-in">
+    <div id="addExpForm" class="hidden panel p-5 mb-6">
+      <h3 class="font-semibold mb-4">New Experiment</h3>
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div><label class="text-xs" style="color:var(--muted)">NAME *</label><input id="e-name" placeholder="e.g. Waitlist Conversion Test"></div>
+        <div><label class="text-xs" style="color:var(--muted)">CATEGORY</label><select id="e-cat"><option>Acquisition</option><option>Activation</option><option>Retention</option><option>Referral</option><option>Revenue</option></select></div>
+      </div>
+      <div class="grid grid-cols-3 gap-4 mb-4">
+        <div><label class="text-xs" style="color:var(--muted)">BASELINE METRIC (%)</label><input id="e-base" type="number" step="0.1" placeholder="12.5"></div>
+        <div><label class="text-xs" style="color:var(--muted)">TARGET METRIC (%)</label><input id="e-target" type="number" step="0.1" placeholder="18.0"></div>
+        <div><label class="text-xs" style="color:var(--muted)">SAMPLE SIZE</label><input id="e-sample" type="number" placeholder="1000"></div>
+      </div>
+      <div class="mb-4"><label class="text-xs" style="color:var(--muted)">HYPOTHESIS</label><textarea id="e-hypo" placeholder="If we [change], then [metric] will [improve] because [reason]"></textarea></div>
+      <div class="flex gap-2">
+        <button onclick="saveExperiment()" class="btn btn-primary">Save Experiment</button>
+        <button onclick="$('addExpForm').classList.add('hidden')" class="btn btn-ghost">Cancel</button>
+      </div>
+    </div>
+    <div id="experimentsList"></div>
+  </div>
+
+  <!-- Funnel -->
+  <div id="tab-funnel" class="hidden fade-in">
+    <div class="panel p-5 mb-6">
+      <h3 class="font-semibold mb-4">Growth Funnel</h3>
+      <div class="grid grid-cols-5 gap-2 mb-4" id="funnelInputs">
+        <div><label class="text-xs" style="color:var(--muted)">VISITORS</label><input id="f-visit" type="number" value="10000"></div>
+        <div><label class="text-xs" style="color:var(--muted)">SIGNUPS</label><input id="f-signup" type="number" value="1200"></div>
+        <div><label class="text-xs" style="color:var(--muted)">ACTIVATED</label><input id="f-activate" type="number" value="480"></div>
+        <div><label class="text-xs" style="color:var(--muted)">RETAINED</label><input id="f-retain" type="number" value="192"></div>
+        <div><label class="text-xs" style="color:var(--muted)">REVENUE</label><input id="f-revenue" type="number" value="48"></div>
+      </div>
+      <button onclick="calculateFunnel()" class="btn btn-primary mb-4">Calculate Funnel</button>
+      <div id="funnelResult"></div>
+    </div>
+    <div class="panel p-4"><h3 class="font-semibold mb-3">Funnel Visualization</h3><div style="position:relative;height:300px"><canvas id="funnelChart"></canvas></div></div>
   </div>
 </div>
+
 <script>
-new Chart(document.getElementById('funnelChart').getContext('2d'),{
-  type:'bar',data:{labels:['Visit','Connect Wallet','Approve','First Tx','Repeat User'],datasets:[{data:[10000,4200,2100,980,640],backgroundColor:['#10b981','#34d399','#6ee7b7','#a7f3d0','#d1fae5'],borderRadius:8,barPercentage:0.7}]},
-  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#065f46'}},y:{grid:{display:false},ticks:{color:'#065f46',font:{size:11}}}}}
-);
-new Chart(document.getElementById('retentionChart').getContext('2d'),{
-  type:'line',data:{labels:['Week 1','Week 2','Week 3','Week 4','Week 5','Week 6'],datasets:[{label:'Cohort A',data:[100,67,54,48,44,41],borderColor:'#10b981',tension:0.4,pointRadius:3},{label:'Cohort B',data:[100,72,61,55,51,48],borderColor:'#34d399',tension:0.4,pointRadius:3}]},
-  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{usePointStyle:true,font:{size:11}}}},scales:{x:{grid:{display:false},ticks:{color:'#065f46',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#065f46',callback:v=>v+'%'}}}}
-});
+const $ = id => document.getElementById(id);
+const STORE = 'growth-lab-experiments';
+let experiments = JSON.parse(localStorage.getItem(STORE) || '[]');
+let charts = {};
+
+function switchTab(name) {
+  document.querySelectorAll('[data-tab]').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === name);
+    t.style.borderBottomColor = t.dataset.tab === name ? 'var(--lime)' : 'transparent';
+    t.style.color = t.dataset.tab === name ? 'var(--lime)' : 'var(--muted)';
+  });
+  ['dashboard','experiments','funnel'].forEach(t => $('tab-'+t).classList.toggle('hidden', t !== name));
+  if (name === 'dashboard') refreshDashboard();
+  if (name === 'experiments') refreshExperiments();
+}
+
+function showAddExperiment() { $('addExpForm').classList.toggle('hidden'); switchTab('experiments'); }
+
+function saveExperiment() {
+  const name = $('e-name').value.trim();
+  if (!name) { alert('Name required'); return; }
+  experiments.push({
+    id: Date.now(), name, category: $('e-cat').value,
+    baseline: parseFloat($('e-base').value) || 0, target: parseFloat($('e-target').value) || 0,
+    sample: parseInt($('e-sample').value) || 0, hypothesis: $('e-hypo').value.trim(),
+    status: 'running', result: null, improvement: 0, createdAt: new Date().toISOString()
+  });
+  localStorage.setItem(STORE, JSON.stringify(experiments));
+  $('addExpForm').classList.add('hidden');
+  ['e-name','e-base','e-target','e-sample','e-hypo'].forEach(id => $(id).value = '');
+  refreshExperiments();
+}
+
+function updateResult(id) {
+  const exp = experiments.find(e => e.id === id);
+  if (!exp) return;
+  const actual = parseFloat(prompt('Enter actual metric (%):', exp.target));
+  if (isNaN(actual)) return;
+  const verdict = confirm('Was this a WIN (improvement)? Click OK for Win, Cancel for Loss');
+  exp.result = actual;
+  exp.improvement = exp.baseline > 0 ? ((actual - exp.baseline) / exp.baseline * 100) : 0;
+  exp.status = verdict ? 'won' : 'lost';
+  localStorage.setItem(STORE, JSON.stringify(experiments));
+  refreshExperiments();
+}
+
+function deleteExp(id) {
+  if (!confirm('Delete this experiment?')) return;
+  experiments = experiments.filter(e => e.id !== id);
+  localStorage.setItem(STORE, JSON.stringify(experiments));
+  refreshExperiments();
+}
+
+function refreshExperiments() {
+  if (!experiments.length) {
+    $('experimentsList').innerHTML = '<div class="panel p-8 text-center"><div class="text-5xl mb-4">🧪</div><h3 class="text-lg font-bold">No Experiments Yet</h3><p class="text-sm" style="color:var(--muted)">Click "+ New Experiment" to start tracking growth tests</p></div>';
+    return;
+  }
+  $('experimentsList').innerHTML = experiments.map(e => `<div class="exp-card">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <h4 class="font-semibold">${e.name}</h4>
+          <span class="badge" style="background:${statusColor(e.status)}22;color:${statusColor(e.status)}">${e.status}</span>
+          <span class="badge" style="background:#1e293b;color:var(--cyan)">${e.category}</span>
+        </div>
+        ${e.hypothesis ? '<p class="text-xs mt-1" style="color:var(--muted)">💡 ' + e.hypothesis + '</p>' : ''}
+        <div class="flex gap-4 mt-2 text-xs" style="color:var(--muted)">
+          <span>Baseline: ${e.baseline}%</span><span>Target: ${e.target}%</span>
+          ${e.result !== null ? '<span>Actual: <strong style="color:var(--green)">' + e.result + '%</strong></span>' : ''}
+          <span>Sample: ${e.sample}</span>
+        </div>
+      </div>
+      <div class="flex gap-1">
+        ${e.status === 'running' ? '<button onclick="updateResult(' + e.id + ')" class="btn btn-ghost text-xs">Record</button>' : ''}
+        <button onclick="deleteExp(${e.id})" class="btn btn-ghost text-xs" style="color:var(--red)">✕</button>
+      </div>
+    </div>
+    ${e.improvement !== 0 ? '<div class="mt-2"><span class="text-sm font-bold" style="color:' + (e.improvement > 0 ? 'var(--green)' : 'var(--red)') + '">' + (e.improvement > 0 ? '↑' : '↓') + Math.abs(e.improvement).toFixed(1) + '% improvement</span></div>' : ''}
+  </div>`).join('');
+}
+
+function refreshDashboard() {
+  const total = experiments.length;
+  const running = experiments.filter(e => e.status === 'running').length;
+  const completed = experiments.filter(e => e.status !== 'running');
+  const wins = completed.filter(e => e.status === 'won');
+  
+  $('totalExp').textContent = total;
+  $('runningExp').textContent = running;
+  $('winRateExp').textContent = completed.length ? ((wins.length / completed.length) * 100).toFixed(0) + '%' : '—';
+  const avgImprove = completed.length ? (completed.reduce((s, e) => s + e.improvement, 0) / completed.length) : 0;
+  $('avgImprove').textContent = completed.length ? (avgImprove > 0 ? '+' : '') + avgImprove.toFixed(1) + '%' : '—';
+
+  // Result chart
+  if (charts.result) charts.result.destroy();
+  const cats = ['Acquisition','Activation','Retention','Referral','Revenue'];
+  const winData = cats.map(c => experiments.filter(e => e.category === c && e.status === 'won').length);
+  const lossData = cats.map(c => experiments.filter(e => e.category === c && e.status === 'lost').length);
+  charts.result = new Chart($('resultChart'), {
+    type: 'bar',
+    data: { labels: cats, datasets: [
+      { label: 'Wins', data: winData, backgroundColor: '#10b981' },
+      { label: 'Losses', data: lossData, backgroundColor: '#ef4444' }
+    ]},
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { x: { stacked: true, grid: { color: '#1e293b' } }, y: { stacked: true, grid: { color: '#1e293b' } } } }
+  });
+
+  // Category impact
+  if (charts.category) charts.category.destroy();
+  const catImprove = cats.map(c => { const exps = experiments.filter(e => e.category === c && e.status !== 'running'); return exps.length ? exps.reduce((s,e) => s + e.improvement, 0) / exps.length : 0; });
+  charts.category = new Chart($('categoryChart'), {
+    type: 'radar',
+    data: { labels: cats, datasets: [{ data: catImprove, backgroundColor: 'rgba(132,204,22,.1)', borderColor: '#84cc16', pointBackgroundColor: '#84cc16' }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { r: { grid: { color: '#1e293b' }, ticks: { color: '#64748b', backdropColor: 'transparent' }, pointLabels: { color: '#94a3b8' } } } }
+  });
+}
+
+function calculateFunnel() {
+  const stages = [
+    { name: 'Visitors', value: parseInt($('f-visit').value) || 0 },
+    { name: 'Signups', value: parseInt($('f-signup').value) || 0 },
+    { name: 'Activated', value: parseInt($('f-activate').value) || 0 },
+    { name: 'Retained', value: parseInt($('f-retain').value) || 0 },
+    { name: 'Revenue', value: parseInt($('f-revenue').value) || 0 },
+  ];
+
+  const conversions = [];
+  for (let i = 1; i < stages.length; i++) {
+    const rate = stages[i-1].value > 0 ? (stages[i].value / stages[i-1].value * 100) : 0;
+    conversions.push({ from: stages[i-1].name, to: stages[i].name, rate: rate.toFixed(1) });
+  }
+
+  const totalConversion = stages[0].value > 0 ? (stages[stages.length-1].value / stages[0].value * 100) : 0;
+
+  $('funnelResult').innerHTML = `
+    <div class="space-y-2 mb-4">${conversions.map(c => `
+      <div class="flex items-center gap-3 p-2 rounded" style="background:#0f172a">
+        <span class="text-sm">${c.from} → ${c.to}</span>
+        <div class="flex-1"><div class="progress"><div class="progress-bar" style="width:${c.rate}%;background:${parseFloat(c.rate)>30?'var(--green)':parseFloat(c.rate)>10?'var(--yellow)':'var(--red)'}"></div></div></div>
+        <span class="mono text-sm font-bold">${c.rate}%</span>
+      </div>
+    `).join('')}</div>
+    <p class="text-sm">End-to-end conversion: <strong class="mono" style="color:var(--lime)">${totalConversion.toFixed(2)}%</strong></p>
+    <p class="text-xs mt-1" style="color:var(--muted)">Biggest drop: <strong>${conversions.reduce((min, c) => parseFloat(c.rate) < parseFloat(min.rate) ? c : min).from} → ${conversions.reduce((min, c) => parseFloat(c.rate) < parseFloat(min.rate) ? c : min).to}</strong></p>
+  `;
+
+  // Funnel chart
+  if (charts.funnel) charts.funnel.destroy();
+  charts.funnel = new Chart($('funnelChart'), {
+    type: 'bar',
+    data: { labels: stages.map(s => s.name), datasets: [{ data: stages.map(s => s.value), backgroundColor: ['#84cc16','#22d3ee','#8b5cf6','#f97316','#ef4444'] }] },
+    options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { grid: { color: '#1e293b' } }, y: { grid: { color: '#1e293b' } } } }
+  });
+}
+
+function statusColor(s) { return s === 'won' ? 'var(--green)' : s === 'lost' ? 'var(--red)' : 'var(--lime)'; }
+refreshDashboard();
 </script>
 </body>
 </html>
