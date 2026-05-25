@@ -1,4 +1,4 @@
 Growth Lab AI
-5 specialist agents completed; 4 high-priority findings; 50371 estimated tokens.
-tokens=50371
-daily_projection=4835616
+5 specialist agents completed; 3 high-priority findings; 55500 estimated tokens.
+tokens=55500
+daily=5328000
