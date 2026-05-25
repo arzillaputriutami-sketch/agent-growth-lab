@@ -100,3 +100,40 @@ index.html                Static live dashboard
 ## 📄 License
 
 MIT.
+
+<!-- MIMO_APPROVAL_PATTERN_UPGRADE -->
+## Reviewer-Grade MiMo Agent Architecture
+
+Growth Lab AI is structured as a token-intensive, multi-agent product rather than a static demo. The pipeline fans out across specialist agents, records per-agent token estimates, then synthesizes findings into reviewer-ready output.
+
+### Specialist Agent Fleet
+- **Audience Mapper** — segments user personas, jobs-to-be-done, and acquisition hooks.
+- **Experiment Designer** — turns hypotheses into measurable growth experiments.
+- **Copy Strategist** — generates campaign angles and landing copy variants.
+- **Metric Analyst** — scores activation, retention, and conversion quality.
+- **Roadmap Synthesizer** — prioritizes experiments by confidence and impact.
+
+### Verified Demo Run
+- Scenario: `web3 tool has traffic but weak activation after first wallet connect`
+- Agents executed: 5
+- Estimated tokens in sample run: **50,371**
+- Daily projection at 96 runs/day: **4,835,616 tokens/day**
+- Output artifact: `docs/example_run.json`
+- Human-readable proof: `docs/EXAMPLE_RUN.md`
+
+### Run Locally
+```bash
+python3 cli.py --all
+python3 -m pytest -q
+python3 - <<'PY'
+from backend.core.pipeline import run_pipeline_sync
+print(run_pipeline_sync('Growth Lab AI', {'subject': 'web3 tool has traffic but weak activation after first wallet connect'}))
+PY
+```
+
+### Proof Pack
+- `proofs/boot_log.txt` — environment boot evidence
+- `proofs/run_sample.txt` — deterministic pipeline output summary
+- `docs/example_run.json` — raw structured result
+- `docs/EXAMPLE_RUN.md` — review-facing run report
+

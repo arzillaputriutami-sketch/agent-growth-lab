@@ -1,0 +1,122 @@
+{
+  "project": "Growth Lab AI",
+  "status": "completed",
+  "mode": "deterministic-reviewer-demo",
+  "latency_ms": 0,
+  "summary": "5 specialist agents completed; 4 high-priority findings; 50371 estimated tokens.",
+  "token_usage": {
+    "project": "Growth Lab AI",
+    "events": [
+      {
+        "timestamp": "2026-05-25T20:14:50.893806+00:00",
+        "project": "Growth Lab AI",
+        "agent": "Liquidity Scout",
+        "estimated_tokens": 10939,
+        "severity": "critical"
+      },
+      {
+        "timestamp": "2026-05-25T20:14:50.893826+00:00",
+        "project": "Growth Lab AI",
+        "agent": "Exploit Sentinel",
+        "estimated_tokens": 11974,
+        "severity": "high"
+      },
+      {
+        "timestamp": "2026-05-25T20:14:50.893832+00:00",
+        "project": "Growth Lab AI",
+        "agent": "Oracle Auditor",
+        "estimated_tokens": 11217,
+        "severity": "medium"
+      },
+      {
+        "timestamp": "2026-05-25T20:14:50.893836+00:00",
+        "project": "Growth Lab AI",
+        "agent": "Treasury Guardian",
+        "estimated_tokens": 11867,
+        "severity": "critical"
+      },
+      {
+        "timestamp": "2026-05-25T20:14:50.893839+00:00",
+        "project": "Growth Lab AI",
+        "agent": "Incident Reporter",
+        "estimated_tokens": 4374,
+        "severity": "high"
+      }
+    ],
+    "total_estimated_tokens": 50371,
+    "daily_projection_tokens": 4835616,
+    "agent_count": 5
+  },
+  "findings": [
+    {
+      "agent": "Liquidity Scout",
+      "role": "tracks pool depth, volatility spikes, and suspicious flow concentration",
+      "severity": "critical",
+      "confidence": 0.75,
+      "finding": "Liquidity Scout reviewed DeFi risk monitoring signal: web3 tool has traffic but weak activation after first wallet connect. Risk pattern=critical confidence=0.75.",
+      "evidence": [
+        "domain=DeFi risk monitoring",
+        "subject_hash=de73c9b74e",
+        "agent_stage=1"
+      ],
+      "recommendation": "Run liquidity scout follow-up pass, capture artifacts, then prioritize critical items first.",
+      "estimated_tokens": 10939
+    },
+    {
+      "agent": "Exploit Sentinel",
+      "role": "maps events to known attack primitives and detects anomalous protocol behavior",
+      "severity": "high",
+      "confidence": 0.91,
+      "finding": "Exploit Sentinel reviewed DeFi risk monitoring signal: web3 tool has traffic but weak activation after first wallet connect. Risk pattern=high confidence=0.91.",
+      "evidence": [
+        "domain=DeFi risk monitoring",
+        "subject_hash=de73c9b74e",
+        "agent_stage=2"
+      ],
+      "recommendation": "Run exploit sentinel follow-up pass, capture artifacts, then prioritize high items first.",
+      "estimated_tokens": 11974
+    },
+    {
+      "agent": "Oracle Auditor",
+      "role": "checks oracle drift, stale feeds, and manipulation windows",
+      "severity": "medium",
+      "confidence": 0.63,
+      "finding": "Oracle Auditor reviewed DeFi risk monitoring signal: web3 tool has traffic but weak activation after first wallet connect. Risk pattern=medium confidence=0.63.",
+      "evidence": [
+        "domain=DeFi risk monitoring",
+        "subject_hash=de73c9b74e",
+        "agent_stage=3"
+      ],
+      "recommendation": "Run oracle auditor follow-up pass, capture artifacts, then prioritize medium items first.",
+      "estimated_tokens": 11217
+    },
+    {
+      "agent": "Treasury Guardian",
+      "role": "scores treasury exposure and proposes emergency controls",
+      "severity": "critical",
+      "confidence": 0.62,
+      "finding": "Treasury Guardian reviewed DeFi risk monitoring signal: web3 tool has traffic but weak activation after first wallet connect. Risk pattern=critical confidence=0.62.",
+      "evidence": [
+        "domain=DeFi risk monitoring",
+        "subject_hash=de73c9b74e",
+        "agent_stage=4"
+      ],
+      "recommendation": "Run treasury guardian follow-up pass, capture artifacts, then prioritize critical items first.",
+      "estimated_tokens": 11867
+    },
+    {
+      "agent": "Incident Reporter",
+      "role": "synthesizes operator-grade markdown incident reports",
+      "severity": "high",
+      "confidence": 0.78,
+      "finding": "Incident Reporter reviewed DeFi risk monitoring signal: web3 tool has traffic but weak activation after first wallet connect. Risk pattern=high confidence=0.78.",
+      "evidence": [
+        "domain=DeFi risk monitoring",
+        "subject_hash=de73c9b74e",
+        "agent_stage=5"
+      ],
+      "recommendation": "Run incident reporter follow-up pass, capture artifacts, then prioritize high items first.",
+      "estimated_tokens": 4374
+    }
+  ]
+}

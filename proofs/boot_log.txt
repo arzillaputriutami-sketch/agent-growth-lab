@@ -1,0 +1,1 @@
+[2026-05-25T20:14:50.894654+00:00] boot ok: Growth Lab AI pipeline loaded; agents=5; mode=deterministic-reviewer-demo
